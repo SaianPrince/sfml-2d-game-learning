@@ -32,7 +32,9 @@ void Application::start(int fps)
 		if (elapsedTime >= frameTime)
 		{
 			createFrame();
-			elapsedTime = elapsedTime - frameTime;
+			elapsedTime = sf::seconds(0.0f);
+			nClock.restart();
+			
 		}
 		else
 		{
