@@ -73,10 +73,7 @@ void Application::keyPressed(sf::Keyboard::Key key)
 		m_snake.m_setDirection(cellDirection::Down);
 	if (key == sf::Keyboard::Space)
 		m_snake.addTail();
-	/*
-if (key == sf::Keyboard::LControl)
-		m_snake.food(window);
-		*/
+
 }
 
 void Application::keyReleased(sf::Keyboard::Key)
