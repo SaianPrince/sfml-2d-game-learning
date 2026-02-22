@@ -76,6 +76,10 @@ void Snake::snakeMove()
 
 void Snake::m_setDirection(cellDirection newDirection)
 {
+	if (m_newDirection == cellDirection::Right && newDirection == cellDirection::Left) return;
+	if (m_newDirection == cellDirection::Left && newDirection == cellDirection::Right) return;
+	if (m_newDirection == cellDirection::Up && newDirection == cellDirection::Down)	 return;
+	if (m_newDirection == cellDirection::Down && newDirection == cellDirection::Up)	 return;
 	m_newDirection = newDirection;
 		
 }
@@ -83,6 +87,9 @@ void Snake::checkFood()
 {
 	if(s_cells[0].m_getLocation() == m_food.m_getLocation())
 	{
+		addTail();
+		refreshFood();
+
 		bool onsnake;
 		do 
 		{
@@ -91,7 +98,6 @@ void Snake::checkFood()
 			{
 				if (next.m_getLocation() == m_food.m_getLocation())
 				{
-					addTail();
 					refreshFood();
 					onsnake = true;
 					break;
@@ -99,9 +105,8 @@ void Snake::checkFood()
 
 			}
 		} while (onsnake);
-		
-
 	}
+		
 }
 bool Snake::isInInside()
 {
