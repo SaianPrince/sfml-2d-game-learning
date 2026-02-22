@@ -7,6 +7,7 @@
 
 Snake::Snake()
 {
+	srand(time(NULL));
 	m_distance = 0.0f;
 	m_newDirection = cellDirection::Right;
 	
@@ -50,25 +51,26 @@ void Snake::addTail()
 
 void Snake::snakeMove()
 {
+	if (!isInInside())
+		return;
 
-	for (auto& next : s_cells)
-	{
-		next.m_move();
-	}
-	m_distance += s_cells[0].m_getSpeed();
-	if (m_distance == s_cells[0].m_getSize())
-	{
-		checkFood();
-		for (int i = s_cells.size() - 1; i > 0; i--)
+		for (auto& next : s_cells)
 		{
-			s_cells[i].m_setDirection(s_cells[i - 1].m_getDirection());
-
+			next.m_move();
 		}
-		s_cells[0].m_setDirection(m_newDirection);
-		m_distance = 0.0f;
+		m_distance += s_cells[0].m_getSpeed();
+		if (m_distance == s_cells[0].m_getSize())
+		{
+			checkFood();
+			for (int i = s_cells.size() - 1; i > 0; i--)
+			{
+				s_cells[i].m_setDirection(s_cells[i - 1].m_getDirection());
+
+			}
+			s_cells[0].m_setDirection(m_newDirection);
+			m_distance = 0.0f;
 		
 	}
-	
 
 }
 
@@ -81,23 +83,38 @@ void Snake::checkFood()
 {
 	if(s_cells[0].m_getLocation() == m_food.m_getLocation())
 	{
-		addTail();
-		refreshFood();
-
-		bool crash;
-		do {
-			crash = false;
+		bool onsnake;
+		do 
+		{
+			onsnake = false;
 			for (auto& next : s_cells)
 			{
-				next.m_getLocation() == m_food.m_getLocation();
-				refreshFood();
-				crash = true;
-				break;
+				if (next.m_getLocation() == m_food.m_getLocation())
+				{
+					addTail();
+					refreshFood();
+					onsnake = true;
+					break;
+				}
+
 			}
-		} while (crash);
+		} while (onsnake);
 		
 
 	}
+}
+bool Snake::isInInside()
+{
+	if(s_cells[0].m_getLocation().x < 0 || 
+	   s_cells[0].m_getLocation().x+ m_cellSize > m_width ||
+	   s_cells[0].m_getLocation().y < 0 ||
+	   s_cells[0].m_getLocation().y + m_cellSize > m_length)
+	{
+		return false;
+	}
+
+	else
+	return true;
 }
 void Snake::refreshFood()
 {
