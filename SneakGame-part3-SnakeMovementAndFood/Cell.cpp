@@ -46,6 +46,7 @@ void Cell::m_draw(nWindow& window)
 
 void Cell::m_setDirection(cellDirection direction)
 {
+	
 	m_direction = direction;
 }
 
